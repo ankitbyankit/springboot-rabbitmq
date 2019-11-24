@@ -31,7 +31,7 @@ Tools used:
 Springboot
 RabbitMQ
 Docker
-Maven
+Maven (Note: Same build can be built using Gradle build tool)
 GitHub
 
 Assumptions:
