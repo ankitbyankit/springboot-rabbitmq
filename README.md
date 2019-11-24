@@ -27,6 +27,18 @@ For Consumer:
 2) use " mvnw install dockerfile:build" to build a image of the scheduler that can be deployed in a docker container
 3) use docker run -p 8080:8080 -t <docker_image_name> (in this scenario it is demo/consumer:latest)
 
+Tools used:
+Springboot
+RabbitMQ
+Docker
+Maven
+GitHub
+
+Assumptions:
+For the purpose of experiment, changes are to be done in properites file only, such as adding new currencies and updating the api token that can be validated by the rest endpoint. 
+For testing purpose I have created two demo gmail user id's for sending mail and receiving mail purpose. You can find the in resources/application.properties and respources/demo.properties of consumer app.
+
+
 
 
 
