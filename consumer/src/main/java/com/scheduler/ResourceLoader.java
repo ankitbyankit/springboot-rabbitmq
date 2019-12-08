@@ -28,7 +28,7 @@ public class ResourceLoader {
 	}
 	
 	public String getCsvCols() {
-		String cols = env.getProperty("code,change");
+		String cols = env.getProperty("csv.columns");
 		return cols;
 	}
 }
