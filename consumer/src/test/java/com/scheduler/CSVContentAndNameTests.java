@@ -23,7 +23,7 @@ public class CSVContentAndNameTests {
 	
 	@Autowired
 	private GenerateCSV generateCSV;
-
+	
 	@Test
 	public void testCSVContent() {
 		Map map = new HashMap();
@@ -39,9 +39,9 @@ public class CSVContentAndNameTests {
 		map.put("change_p", -0.21);
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("Forex");
+		sb.append("code");
 		sb.append(",");
-		sb.append("Change");
+		sb.append("change");
 		sb.append("\n");
 		sb.append("EUR.FOREX");
 		sb.append(",");
@@ -51,7 +51,7 @@ public class CSVContentAndNameTests {
 		String expected = sb.toString();
 		
 		try {
-			String result = generateCSV.generateCSV(map);
+			String result = generateCSV.generateCSV("code,change",map);
 			assertEquals(expected, result);
 		}catch(Exception ex) {}
 	}
