@@ -47,7 +47,7 @@ public class Consumer{
         	 //CurrencyData currencyData = objMap.readValue(message, CurrencyData.class);
         	 Map map = objMap.readValue(message, HashMap.class);
         	         	 
-        	 String csvStr = getCSV.generateCSV(map);
+        	 String csvStr = getCSV.generateCSV(res.getCsvCols(),map);
         	 //String attachmentName = getCSV.getName(currencyData.getTimestamp(),TimeZone.getDefault());
         	 
         	 TimeZone tz = TimeZone.getDefault();
