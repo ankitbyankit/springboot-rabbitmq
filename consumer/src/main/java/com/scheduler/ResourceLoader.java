@@ -26,4 +26,9 @@ public class ResourceLoader {
 		String text = env.getProperty("email.text");
 		return text;
 	}
+	
+	public String getCsvCols() {
+		String cols = env.getProperty("code,change");
+		return cols;
+	}
 }
