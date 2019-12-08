@@ -30,24 +30,33 @@ public class RunProducer {
 	public void test() throws Exception{
 		
 		List<String> lst = res.readProperties();
-		final List<Future<CurrencyData>> futures = new ArrayList();
+		final List<Future<CurrencyData>> futures = new ArrayList<Future<CurrencyData>>();
 		String token = res.getAPI();
 		log.info("Checking everying minute");
 		for(int i=0; i<lst.size();i++){
 			String url = DOMAIN+lst.get(i)+API+token+FORMAT;
 //			Future<CurrencyData>future = pro.testProducer(url);
 			futures.add(pro.testProducer(url));
-		}		
+		}	
 		
-//		try {
-//	        for (Future<CurrencyData> future : futures) {
-//	        	if(future.isDone()) {
-//	        		log.info(("Inside future loop::"+future.get().getCode()));
-//	        	}
-//	             // do anything you need, e.g. isDone(), ...
-//	        }
-//	    } catch (Exception e) {
-//	        e.printStackTrace();
-//	    }
+		log.info("Size of futures::"+futures.size());
+		for(int i=0; i<futures.size(); i++) {
+			if(futures.get(i).isDone())
+				log.info("get the value::"+futures.get(i).get().getCode());
+		}
 	}
 }
+
+
+/*
+//try {
+//for (Future<CurrencyData> future : futures) {
+//	if(future.isDone()) {
+//		log.info(("Inside future loop::"+future.get().getCode()));
+//	}
+//     // do anything you need, e.g. isDone(), ...
+//}
+//} catch (Exception e) {
+//e.printStackTrace();
+//}
+*/
