@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.HashMap;
 import java.util.concurrent.Future;
 
 @Component
@@ -25,49 +26,39 @@ public class Producer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
     
+    @Autowired
+    private ObjectMapper objMap;
+    
     @Async("threadPoolTaskExecutor")
     public Future<CurrencyData> testProducer(String url) {
     	log.info("Execute method asynchronously - "+ Thread.currentThread().getName());
     	
     	RestTemplate restTemplate = new RestTemplate();
-    	ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
     	CurrencyData cd = null;
     	try {
+    		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
     		cd = new ObjectMapper().readValue(response.getBody(), CurrencyData.class);
-    		log.info(Thread.currentThread().getName()+">>"+cd.getCode()+">>"+cd.getTimestamp()+">>"+cd.getChange());
-    	}catch(Exception ex) {
-    		log.info("Error while converting json to object"+ex);
-    	}
-    	
-    	try {
+    		
+//    		HashMap myMap = objMap.readValue(response.getBody(), HashMap.class);
+//    		System.out.println("My hash map:::"+myMap);    		
+    		
     		if(!response.getStatusCode().is2xxSuccessful()) {
         		log.info("No currency data for "+url);
         		return null;
         	}
-//    		Thread.sleep(2000);
     		if(cd.getChange() != 0) {
     			rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, response.getBody());
     		}
 //    		rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, response.getBody());
+    		rabbitTemplate.convertAndSend("test.topic.exchange", "success.email", response.getBody());
     		return new AsyncResult<CurrencyData>(cd);
     	}catch(Exception ex) {
-    		log.info("Error in testProducer::"+ex);
+    		//rabbitTemplate.convertAndSend("test.topic.exchange", "fail.email", ex.getMessage());
+    		log.error("Error in testProducer::"+ex);
+    		return null;
     	}
-    	return null;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
     /*Main Method
     @Scheduled(fixedRate = 60000)
     @Async
